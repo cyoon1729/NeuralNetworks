@@ -1,26 +1,29 @@
 #pragma once
 
-#include <vector>
+#include <cmath>
 
-//initialize zero vector of dimensions x, y
-std::vector< std::vector<double> > zero_vector(int x, int y);
+inline double sigmoid(double x){
+    return (1 / (1 + exp(-x)));
+}
 
-//initialize zero vector of same dimensions as input vector
-std::vector< std::vector<double> > zeros_like(std::vector< std::vector<double> > a);
+inline double d_sigmoid(double x){
+    return sigmoid(x) * (1 - sigmoid(x));
+}
 
-//initialize 2D vector of dimensions x, y with random doubles in [0,1]
-std::vector< std::vector<double> > random_vector(int x, int y);
+inline double tanh(double x){
+    return (exp(x) - exp(-x)) / (exp(x) + exp(-x));
+}
 
-//calculate dot product
-double dot(std::vector< std::vector<double> > a, std::vector< std::vector<double> > b) ;
+inline double d_tanh(double x){
+    return 1 - pow(tanh(x), 2);
+}
 
-//matrix multiplication
-std::vector< std::vector<double> > multiply(std::vector< std::vector<double> > a, std::vector< std::vector<double> > b) ;
+inline double relu(double x){
+    return x > 0 ? x : 0;
+}
 
-//transpose
-std::vector< std::vector<double> > transpose(std::vector< std::vector<double> > a);
-
-
-//element-wise add a and b (on a)
-void vector_add(std::vector< std::vector<double> > a, std::vector< std::vector<double> > b);
-
+inline double d_relu(double x){
+    return x > 0 ? 1 : 0;
+}
+    
+ 
