@@ -1,29 +1,32 @@
 #pragma once
 
-#include <cmath>
+#include <vector>
 
-inline double sigmoid(double x){
-    return (1 / (1 + exp(-x)));
-}
+//initialize zero vector of dimensions x, y
+std::vector< std::vector<double> > zero_vector(int x, int y);
 
-inline double d_sigmoid(double x){
-    return sigmoid(x) * (1 - sigmoid(x));
-}
+//initialize zero vector of same dimensions as input vector
+std::vector< std::vector<double> > zeros_like(std::vector< std::vector<double> > a);
 
-inline double tanh(double x){
-    return (exp(x) - exp(-x)) / (exp(x) + exp(-x));
-}
+//return random real number in range [-1, 1]
+double random_real();
 
-inline double d_tanh(double x){
-    return 1 - pow(tanh(x), 2);
-}
+//initialize 2D vector of dimensions x, y with random doubles in [0,1]
+std::vector< std::vector<double> > random_vector(int x, int y);
 
-inline double relu(double x){
-    return x > 0 ? x : 0;
-}
+//calculate dot product
+double dot(std::vector< std::vector<double> > a, std::vector< std::vector<double> > b) ;
 
-inline double d_relu(double x){
-    return x > 0 ? 1 : 0;
-}
-    
- 
+//matrix multiplication
+std::vector< std::vector<double> > multiply(std::vector< std::vector<double> > a, std::vector< std::vector<double> > b) ;
+
+std::vector< std::vector<double> > transpose(std::vector< std::vector<double> > a);
+
+std::vector< std::vector<double> > element_wise_add(std::vector< std::vector<double> > a, std::vector< std::vector<double> > b);
+
+std::vector< std::vector<double> > element_wise_subtract(std::vector< std::vector<double> > a, std::vector< std::vector<double> > b);
+
+
+std::vector< std::vector<double> > element_wise_multiply(std::vector< std::vector<double> > a, std::vector< std::vector<double> > b);
+
+std::vector< std::vector<double> > scalar_multiply(double s, std::vector< std::vector<double> > a);
