@@ -1,6 +1,8 @@
 #pragma once
 
 #include <vector>
+#include "ann.h"
+#include "layer.h"
 
 //initialize zero vector of dimensions x, y
 std::vector< std::vector<double> > zero_vector(int x, int y);
@@ -9,10 +11,10 @@ std::vector< std::vector<double> > zero_vector(int x, int y);
 std::vector< std::vector<double> > zeros_like(std::vector< std::vector<double> > a);
 
 //return random real number in range [-1, 1]
-double random_real();
+double random_real(Layer layer);
 
 //initialize 2D vector of dimensions x, y with random doubles in [0,1]
-std::vector< std::vector<double> > random_vector(int x, int y);
+std::vector< std::vector<double> > random_vector(int x, int y, Layer layer);
 
 //calculate dot product
 double dot(std::vector< std::vector<double> > a, std::vector< std::vector<double> > b) ;
