@@ -64,7 +64,6 @@ class Layer{
         
         std::vector< std::vector<double> > forward_propagate();
 
-        void back_propagate(std::vector< std::vector<double> > p_delta);
         
         inline void set_delta_weights(std::vector< std::vector<double> > dw){
             this->delta_weights = dw;
@@ -76,13 +75,16 @@ class Layer{
 
         void update_weights();
 
-    private:
-        std::vector<Neuron> neurons;
-        std::string activation_funct;
-        std::string layer_identity;
         std::vector< std::vector<double> > weights;
+        std::vector< std::vector<double> > weights_update;
         std::vector< std::vector<double> > delta_weights;
         std::vector< std::vector<double> > delta;
+        std::vector<Neuron> neurons;
+
+    private:
+        //std::vector<Neuron> neurons;
+        std::string activation_funct;
+        std::string layer_identity;
 
         int num_neurons;
         double learning_rate;
@@ -90,4 +92,5 @@ class Layer{
         double regularization;
 
 };
+
 
