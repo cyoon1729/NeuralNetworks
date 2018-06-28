@@ -2,6 +2,7 @@
 #include "../include/layer.h"
 #include "../include/activation_functions.h"
 #include "../include/matrix_operations.h"
+#include "../include/back_propagation.h"
 #include <string.h>
 #include <vector>
 #include <cmath>
@@ -64,10 +65,10 @@ void ANN::set_activation_functions(std::vector<std::string> _activation_function
     }
 }
 
-std::vector<double> ANN::run(std::vector<double> input){
+void ANN::run(std::vector<double> input){ //std::vector<double> ANN::run(std::vector<double> input){
     std::vector<double> nn_output; 
     std::vector< std::vector<double> > layer_output; 
-  
+    this->inputs = input;
     //input layer
     this->layers[0].z_values(input);
     layer_output = this->layers[0].forward_propagate(); 
@@ -86,10 +87,10 @@ std::vector<double> ANN::run(std::vector<double> input){
     this->layers[this->num_hidden_layers+1].activation_values();
     nn_output = this->layers[this->num_hidden_layers+1].get_activation_values();
     
-    std::cout << "forward pass complete\n";
+    //std::cout << "forward pass complete\n";
 
     this->outputs = nn_output;
-    return nn_output;
+    //return nn_output;
 }
 
 double ANN::cross_entropy_error(std::vector< std::vector<double> > target, std::vector< std::vector<double> > output, int batch_size){
@@ -113,51 +114,48 @@ double ANN::mean_square_error(std::vector< std::vector<double> > target, std::ve
 }
 
 void ANN::train(std::vector<double> input, std::vector<double> expected_output){
-    this->inputs = input;
-    std::vector< std::vector<double> > nn_input; nn_input.resize(1); nn_input[0] = this->inputs;
-    std::vector< std::vector<double> > nn_output; nn_output.resize(1); 
-    std::vector< std::vector<double> > _expected_output; _expected_output.resize(1);
-    _expected_output[0] = expected_output;
-    
     for(int epoch = 0; epoch < this->max_epochs; epoch++){
-        nn_output[0] = run(nn_input[0]);
-
-        //batch size = 1 for online learning
-        this->error = mean_square_error(_expected_output, nn_output, 1);     
-        if(this->error <= this->desired_error){
-            break;
-        }
-        
-        std::vector< std::vector<double> > delta_outputLayer;
-        std::vector< std::vector<double> > output_layer_Dvals;
-        std::vector< std::vector<double> > output_layer_inputs;
-        
-        output_layer_Dvals.resize(1); output_layer_Dvals[0].resize(this->num_outputs);
-        output_layer_inputs.resize(1); output_layer_inputs[0] = this->layers[this->num_hidden_layers+1].get_z_values();
-        for(int i = 0; i < this->num_outputs; i++){
-            double z = output_layer_inputs[0][i];
-            output_layer_Dvals[0][i] = this->layers[this->num_hidden_layers+1].backward_activation_function(z);
-        }
-        
-        delta_outputLayer = element_wise_multiply(element_wise_subtract(nn_output, _expected_output), output_layer_Dvals);
-        this->layers[this->num_hidden_layers+1].set_delta(delta_outputLayer);
-        
-        for(int i = this->num_hidden_layers; i > 0; i--){
-            this->layers[i].back_propagate(this->layers[i+1].get_delta());
-            this->layers[i].update_weights();    
+        run(input);
+        *this = backprop(*this, expected_output);
+        for(int i = 0; i <= this->num_hidden_layers; i++){
+            this->layers[i].weights_update = element_wise_add(this->layers[i].delta_weights, scalar_multiply(this->momentum, this->layers[i].weights));
         }
 
-        //input layer -> hidden layer
-        std::vector< std::vector<double> > delta_inputLayer;
-        delta_inputLayer = multiply(this->layers[1].get_delta(), nn_input);
-        this->layers[0].set_delta(delta_inputLayer);
-        this->layers[0].set_delta_weights(element_wise_add(scalar_multiply(this->learning_rate, delta_inputLayer), scalar_multiply(this->momentum, this->layers[0].get_delta_weights())));
-        this->layers[0].update_weights(); 
+        for(int i = 0; i <= this->num_hidden_layers; i++){
+            this->layers[i].update_weights();
+        }
     }
 }
 
-//read README for algorithm (but not written yet)
-void ANN::batch_learn(std::vector< std::vector<double> > inputs, std::vector< std::vector<double> > outputs){
+void ANN::batch_learn(std::vector< std::vector<double> > data_set, std::vector< std::vector<double> > expected_outputs, int batch_size){
     
-}
+    double batch_coeff = 1 / (double)batch_size;
+    for(int epoch = 0; epoch < this->max_epochs; epoch++){
+        for(int input_data = 0; input_data < data_set.size(); input_data++){
+            run(data_set[input_data]);
+            *this = backprop(*this, expected_outputs[input_data]);
+        }
 
+        for(int i = 0; i <= this->num_hidden_layers; i++){
+            this->layers[i].weights_update = element_wise_add(scalar_multiply(batch_coeff, this->layers[i].delta_weights), scalar_multiply(this->momentum, this->layers[i].weights));
+            this->layers[i].update_weights();
+        }
+
+        if(epoch % (max_epoch / 100) == 0){
+            std::cout << "=======epoch: " << epoch << " ========\n";
+            
+            for(int i = 0; i <= this->num_hidden_layers; i++){
+                std::cout << "---" << this->layers[i].return_layer_identity() << " layer "<< " weights---\n";
+                for(int j = 0; j < this->layers[i].weights.size(); j++){
+                    for(int k = 0; k < this->layers[i].weights[0].size(); k++){
+                        std::cout << this->layers[i].weights[j][k] << " ";
+                    }
+                    std::cout << "\n";
+                }
+            }
+
+            std::cout << "===============================\n";
+
+        }
+    }
+}
