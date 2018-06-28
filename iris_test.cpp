@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-#include "ann.h"
+#include "./include/ann.h"
 #include <vector>
 
 int main(){
