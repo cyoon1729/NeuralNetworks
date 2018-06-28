@@ -12,7 +12,7 @@ Layer::Layer(int _num_neurons, std::string layer_id){
 }
 
 void Layer::initialize_weights(int r, int c){
-    this->weights = random_vector(r, c);
+    this->weights = random_vector(r, c, *this);
 }
 
 void Layer::initialize_delta_weights(int r, int c){
@@ -81,58 +81,9 @@ std::vector< std::vector<double> > Layer::forward_propagate(){
     layer_out = multiply(this->weights, transpose(layer_in));
     
     //add bias
-
-    std::cout << "========layer: " << this->layer_identity << "=======\n";
-    std::cout << "------input------\n";
-    for(int i = 0; i < layer_in.size(); i++){
-        for(int j = 0; j < layer_in[0].size(); j++){
-            std::cout << layer_in[i][j] << " ";
-        }
-        std::cout << "\n";
-    }
-    std::cout << "-------weights------\n";
-    for(int i = 0; i < this->weights.size(); i++){
-        for(int j = 0; j < this->weights[0].size(); j++){
-            std::cout << weights[i][j] << " ";
-        }
-        std::cout << "\n";
-    }
-    std::cout << "------output------\n";
-    for(int i = 0; i < layer_out.size(); i++){
-        for(int j = 0; j < layer_out[0].size(); j++){
-            std::cout << layer_out[i][j] << " ";
-        }
-        std::cout << "\n";
-    }
-
-    std::cout << "===================================================\n";
-
     return transpose(layer_out);
 }
 
-
-void Layer::back_propagate(std::vector< std::vector<double> > p_delta){
-    std::vector< std::vector<double> > _delta;
-    std::vector< std::vector<double> > d_z_vals; 
-    std::vector< std::vector<double> > activation_vals; 
-
-    d_z_vals.resize(1); d_z_vals[0].resize(this->num_neurons);
-    for(int i = 0; i < this->num_neurons; i++){
-        double _z = this->neurons[i].z;
-        d_z_vals[0][i] = backward_activation_function(_z);
-    }
-
-    activation_vals.resize(1); activation_vals[0].resize(this->num_neurons);
-    for(int i = 0; i < this->num_neurons; i++){
-        activation_vals[0][i] = neurons[i].z;    
-    }
-    
-    d_z_vals = transpose(d_z_vals);
-    _delta = element_wise_multiply(multiply(transpose(this->weights), p_delta), d_z_vals); 
-    this->delta = _delta;
-    this->delta_weights = element_wise_add(scalar_multiply(this->learning_rate, multiply(p_delta, activation_vals)), scalar_multiply(this->momentum, this->delta_weights));
-}
-
 void Layer::update_weights(){
-    this->weights = element_wise_subtract(this->weights, this->delta_weights);
+    this->weights = element_wise_subtract(this->weights, scalar_multiply(this->learning_rate, this->weights_update));
 }
