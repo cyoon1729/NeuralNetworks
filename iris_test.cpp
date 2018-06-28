@@ -13,7 +13,7 @@ int main(){
     test.set_learning_rate(0.05);
     test.set_momentum(0.05);
     test.set_desired_error(0.01);
-    test.set_max_epochs(1001);
+    test.set_max_epochs(1000);
     std::ifstream trainfile("iris_train.txt");
     std::ifstream testfile("iris_test.txt");
 
