@@ -1,2 +1,2 @@
-lightweight neural network library
+neural network 
 
