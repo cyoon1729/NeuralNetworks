@@ -4,9 +4,9 @@
 #include <vector>
 
 int main(){
-    ANN test(4,2,8,3);
+    ANN test(4,1,10,3);
     
-    std::vector<std::string> af; af.resize(1); af = {"sigmoid", "sigmoid", "sigmoid"};
+    std::vector<std::string> af; af.resize(1); af = {"sigmoid", "sigmoid"};
     test.set_activation_functions(af);
 
     //neural netowrk params
