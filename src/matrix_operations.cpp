@@ -29,26 +29,13 @@ std::vector< std::vector<double> > zeros_like(std::vector< std::vector<double> >
 }
 
 double random_real(Layer layer){
-    //return ((double)rand() / ((double)RAND_MAX / 2.0)) - 1.0;
-    //return ((double)rand() / ((double)RAND_MAX) / 2.0);
-
-    /*std::random_device rd;
-    std::mt19937 e2(rd());
-    std::uniform_real_distribution<> dist(0, 1); */
     double lower;
     double upper;
-
     double n = (double)layer.neurons.size();
 
     upper = std::sqrt(2. / n);
     lower = 0. - upper;
-
-    /*std::random_device rd;
-    std::mt19937 e2(rd());
-    std::uniform_real_distribution<> dist(lower, upper);
-    return dist(e2);*/
     return lower + (rand() / ( RAND_MAX / (upper - lower) ));
-    //return rand() / RAND_MAX;
 }
 
 double he_rand(){
