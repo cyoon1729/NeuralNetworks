@@ -26,4 +26,10 @@ inline double d_relu(double x){
     return x > 0 ? 1 : 0;
 }
     
- 
+inline double linear(double x){
+    return x;
+}
+
+inline double d_linear(double x){
+    return 1;
+}
