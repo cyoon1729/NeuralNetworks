@@ -141,7 +141,7 @@ void ANN::batch_learn(std::vector< std::vector<double> > data_set, std::vector< 
             this->layers[i].update_weights();
         }
 
-        if(epoch % (max_epoch / 100) == 0){
+        if(epoch % (this->max_epochs / 100) == 0){
             std::cout << "=======epoch: " << epoch << " ========\n";
             
             for(int i = 0; i <= this->num_hidden_layers; i++){
