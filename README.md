@@ -1,3 +1,3 @@
 # neural network 
 
-read example
+read iris examples 
