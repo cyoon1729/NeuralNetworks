@@ -12,7 +12,7 @@ int main(){
     //neural netowrk params
     test.set_learning_rate(0.05);
     test.set_momentum(0.05);
-    test.set_desired_error(0.01);
+    test.set_desired_error(0.0001);
     test.set_max_epochs(1000);
     std::ifstream trainfile("iris_train.txt");
     std::ifstream testfile("iris_test.txt");
@@ -57,14 +57,18 @@ int main(){
     }
     
     for(int i = 0; i < testcount; i++){
+        std::cout << "----TEST " << i << " ----" << "\n";
+        std::cout << "INPUT DATA: ";
         for(int j = 0; j < test_data[i].size(); j++){
             std::cout << test_data[i][j] << " ";
         }
         std::cout << "\n";
+        std::cout << "PREDICTIONS: ";
         for(int j = 0; j < prediction[i].size(); j++){
             std::cout << prediction[i][j] << " ";
         }
         std::cout << "\n";
+        std::cout << "EXPECTED OUTPUT: ";
         for(int j = 0; j < correct_outputs[i].size(); j++){
             std::cout << correct_outputs[i][j] << " ";
         }
