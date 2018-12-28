@@ -1,3 +1,3 @@
-# neural network 
+# sANNity
 
-Really Dirty Code (written when I sucked at coding), will do a clean up soon.
+sANNity is a C++ neural network library with no use of third party dependencies.
