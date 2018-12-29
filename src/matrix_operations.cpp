@@ -85,7 +85,7 @@ Matrix operator*(const Matrix& lhs, const Matrix& rhs){
     for(size_t i = 0; i < lhs.m; i++){
         for(size_t j = 0; j < rhs.n; j++){
             for(size_t k = 0; k < lhs.n; k++){
-                ret.matrix[i + j * k] += lhs.matrix[k + i * lhs.n] * rhs.matrix[j + k * rhs.n];
+                ret.matrix[j + i * rhs.n] += lhs.matrix[k + i * lhs.n] * rhs.matrix[j + k * rhs.n];
             }
         }
     }

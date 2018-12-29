@@ -37,6 +37,7 @@ Matrix operator*(const double k, const Matrix& a);
 Matrix operator*(const Matrix& lhs, const Matrix& rhs);
 
 };
+
 // std::vector< std::vector<double> > zero_vector(int x, int y);
 
 // //initialize zero vector of same dimensions as input vector
