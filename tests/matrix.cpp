@@ -37,8 +37,10 @@ int main(){
     std::cout << "\n--scalar multiplication--\n";
     std::cout << scalar * A;
     std::cout << "\n";
-    // A.T();
-    // std::cout << "\n--Transpose--\n";
-    // std::cout << A;
+    
+    std::cout << "\n--Transpose--\n";
+    A.T();
+    std::cout << A;
+
     return 0;
 }
