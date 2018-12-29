@@ -46,10 +46,10 @@ void Matrix::fill_weights(double low, double high){
 void Matrix::T(){
     std::vector<double> original = this->matrix;
     this->matrix.resize(this->n * this->m);
-    for(size_t n = 0; n < this->n * this->m; n++){
-        size_t i = n/this->m;
-        size_t j = n%this->n;
-        this->matrix[n] = original[this->m + i];
+    for(size_t e = 0; e < this->n * this->m; e++){
+        size_t i = e/this->m;
+        size_t j = e%this->m;
+        this->matrix[e] = original[this->n * j + i];
     }
     std::swap(this->m, this->n);
     this->transposed = !this->transposed;
