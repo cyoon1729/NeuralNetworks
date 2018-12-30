@@ -19,7 +19,7 @@ struct Matrix{
     void fill_weights(const std::string initializer); // weight initialization using "glorot," "he-et-al," and "kaiming" 
     void fill_weights(const double low, const double high); // weight initialization with uniform distribution given lower and upper bound
     void T(); //transpose
-    friend std::ostream& operator<<(std::ostream& os, const Matrix& M);
+    
 };
 
 // element wise addition
@@ -33,5 +33,8 @@ const Matrix operator*(const double k, const Matrix& a);
 
 // matrix multipication (also dot product)
 const Matrix operator*(const Matrix& lhs, const Matrix& rhs);
+
+// numpy style matrix output
+std::ostream& operator<<(std::ostream& os, const Matrix& M);
 
 };
