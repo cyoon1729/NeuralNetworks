@@ -51,7 +51,7 @@ void Matrix::T(){
     this->transposed = !this->transposed;
 }
 
-Matrix operator+(const Matrix& lhs, const Matrix& rhs){
+const Matrix operator+(const Matrix& lhs, const Matrix& rhs){
     Matrix ret(lhs.m, lhs.n);
     for(size_t entry = 0; entry < lhs.m * lhs.n; ++entry){
         ret.matrix[entry] = lhs.matrix[entry] + rhs.matrix[entry];
@@ -59,7 +59,7 @@ Matrix operator+(const Matrix& lhs, const Matrix& rhs){
     return ret;
 }
 
-Matrix operator-(const Matrix& lhs, const Matrix& rhs){
+const Matrix operator-(const Matrix& lhs, const Matrix& rhs){
     Matrix ret(lhs.m, lhs.n);
     for(size_t entry = 0; entry < lhs.m * lhs.n; ++entry){
         ret.matrix[entry] = lhs.matrix[entry] - rhs.matrix[entry];
@@ -67,7 +67,7 @@ Matrix operator-(const Matrix& lhs, const Matrix& rhs){
     return ret;
 }
 
-Matrix operator*(const double k, const Matrix& rhs){
+const Matrix operator*(const double k, const Matrix& rhs){
     Matrix ret(rhs.m, rhs.n);
     for(size_t entry = 0; entry < rhs.m * rhs.n; ++entry){
         ret.matrix[entry] = k * rhs.matrix[entry];
@@ -75,7 +75,7 @@ Matrix operator*(const double k, const Matrix& rhs){
     return ret;
 }
 
-Matrix operator*(const Matrix& lhs, const Matrix& rhs){
+const Matrix operator*(const Matrix& lhs, const Matrix& rhs){
     assert(lhs.n == rhs.m);
     Matrix ret(lhs.m, rhs.n);
     for(size_t i = 0; i < lhs.m; ++i){
