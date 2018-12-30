@@ -6,10 +6,6 @@
 #include <math.h>
 #include <assert.h>
 
-/*
-TODO: fix tranpose, matrix multiplication
-*/
-
 namespace matrix{
 
 void Matrix::fill_weights(std::string initializer){
