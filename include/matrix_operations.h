@@ -23,15 +23,15 @@ struct Matrix{
 };
 
 // element wise addition
-Matrix operator+(const Matrix& lhs, const Matrix& rhs);
+const Matrix operator+(const Matrix& lhs, const Matrix& rhs);
 
 // element wise subtraction
-Matrix operator-(const Matrix& lhs, const Matrix& rhs);
+const Matrix operator-(const Matrix& lhs, const Matrix& rhs);
 
 // scalar multiplication
-Matrix operator*(const double k, const Matrix& a);
+const Matrix operator*(const double k, const Matrix& a);
 
 // matrix multipication (also dot product)
-Matrix operator*(const Matrix& lhs, const Matrix& rhs);
+const Matrix operator*(const Matrix& lhs, const Matrix& rhs);
 
 };
