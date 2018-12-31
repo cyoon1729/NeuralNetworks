@@ -1,9 +1,35 @@
 #include "../include/layer.h"
-#include "../include/activation_functions.h"
 #include "../include/matrix_operations.h"
 #include <vector>
 #include <string>
 #include <iostream>
+
+namespace neuralnet{
+
+// activate neuron using activation function
+matrix::Matrix Layer::activate(){
+    const matrix::Matrix activated_neurons;
+    return activated_neurons;
+
+}
+
+// compute gradient of activation fuction 
+matrix::Matrix Layer::gradients(){
+    const matrix::Matrix gradients;
+    return gradients;
+}
+
+matrix::Matrix Layer::forward(){
+    return this->weights * this->neurons + this->bias
+}
+
+// perform forward propagate from layer to next layer
+void Layer::pass_forward(Layer& lhs, Layer& rhs){
+    rhs.neurons = lhs.activate(lhs.forward());
+}
+
+}
+
 
 Layer::Layer(int _num_neurons, std::string layer_id){
     this->num_neurons = _num_neurons;
