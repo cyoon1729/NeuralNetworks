@@ -8,8 +8,9 @@ int main(){
     std::vector<double> input = {0.3, 0.3, 1.0};
     one.feed(input);
     std::cout << "\n";
-    one.forward(two);
-
+    one.pass_forward(two);
+    std::cout << "\n";
+    std::cout << one.gradients();
     // std::cout << one.get_weights();
     // std::cout << "\n";
     // std::cout << two.get_weights();
