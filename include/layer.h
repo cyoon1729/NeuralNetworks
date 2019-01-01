@@ -70,10 +70,10 @@ public:
     matrix::Matrix gradients();
     
     // perform forward propagate: W.T @ x + b
-    void forward(Layer &next_layer);
+    void pass_forward(Layer &next_layer);
 
     // update weights and bias one step
-    void step();
+    void step(matrix::Matrix &weight_update);
 
     void feed(std::vector<double> &input);
 
