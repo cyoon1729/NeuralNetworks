@@ -8,6 +8,7 @@
 
 namespace matrix{
 
+
 void Matrix::fill_weights(const std::string initializer){
     this->matrix.resize(this->m * this->n);
     if(initializer== "zero"){
@@ -49,6 +50,22 @@ void Matrix::T(){
     }
     std::swap(this->m, this->n);
     this->transposed = !this->transposed;
+}
+
+void copy_matrix(Matrix& A, Matrix& B){
+    A = B;
+}
+
+void initialize(Matrix& empty_matrix, size_t row, size_t col, std::string initializer){
+    empty_matrix.m = row;
+    empty_matrix.n = col;
+    empty_matrix.fill_weights(initializer);
+}
+
+void initialize(Matrix& empty_matrix, size_t row, size_t col, double low, double high){
+    empty_matrix.m = row;
+    empty_matrix.n = col;
+    empty_matrix.fill_weights(low, high);
 }
 
 const Matrix operator+(const Matrix& lhs, const Matrix& rhs){
