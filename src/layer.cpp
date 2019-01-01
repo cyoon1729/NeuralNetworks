@@ -35,7 +35,7 @@ void Layer::activate(){
         z = this->activation_function(z);
     }
 }
-void Layer::forward(Layer &next_layer){
+void Layer::pass_forward(Layer &next_layer){
     matrix::copy_matrix(this->transposed_weights, this->weights);
     transposed_weights.T();
     this->activate();
@@ -56,6 +56,10 @@ matrix::Matrix Layer::gradients(){
 
 matrix::Matrix Layer::get_weights(){
     return this->weights;
+}
+
+void Layer::step(matrix::Matrix &weights_update){
+    this->weights = this->weights - weights_update;
 }
 
 void Layer::feed(std::vector<double> &input){
