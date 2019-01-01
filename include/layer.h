@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <string>
-#include <utility>
+#include <functional>
 #include "./matrix_operations.h"
 
 namespace neuralnet{
@@ -12,85 +12,89 @@ class Layer{
 public:
     Layer(const size_t num_in, const size_t num_out, const std::string activation_function, const std::string initializer) 
         : fan_in(num_in), fan_out(num_out), activation_function_name(activation_function){
-            neurons(1, num_out);
-            neurons.fill_weight("zeros");
-            weights(num_in, num_out);
-            weights.fill_weight(initializer);
-            bias(1, num_out);
-            bias.fill_weight(initializer);
+            initialize(neurons, num_in, 1, "zeros");
+            initialize(weights, num_in, num_out, initializer);
+            initialize(bias, num_out, 1, initializer);
+            this->set_activation_function();
+            
     };
 
     // initialize with weights and bias with range
     Layer(const size_t num_in, const size_t num_out, const std::string activation_function, const double low, const double high) 
         : fan_in(num_in), fan_out(num_out), activation_function_name(activation_function){
-            neurons(1, num_out);
-            neurons.fill_weight("zeros");
-            weights(num_in, num_out);
-            weights.fill_weight(low, high);
-            bias(1, num_out);
-            bias.fill_weight(low, high);
+            initialize(neurons, num_in, 1, "zeros");
+            initialize(weights, num_in, num_out, low, high);
+            initialize(bias, num_out, 1, low, high);
+            this->set_activation_function();
     };
 
     // initialize with no bias
     Layer(const size_t num_in, const size_t num_out, const std::string activation_function, const std::string initializer, const std::string no_bias) 
         : fan_in(num_in), fan_out(num_out), activation_function_name(activation_function){
-            neurons(1, num_out);
-            neurons.fill_weight("zeros");
-            weights(num_in, num_out);
-            weights.fill_weight(initializer)
-            bias(1, num_out);
-            bias.fill_weight(initializer)
+            initialize(neurons, num_in, 1, "zeros");
+            initialize(weights, num_in, num_out, initializer);
+            initialize(bias, num_out, 1, initializer);
+            this->set_activation_function();
     };
 
     // initialize with no bias and weight with range
     Layer(const size_t num_in, const size_t num_out, const std::string activation_function, const double low, const double high, const std::string no_bias) 
         : fan_in(num_in), fan_out(num_out), activation_function_name(activation_function){
-            neurons(1, num_out);
-            neurons.fill_weight("zeros");
-            weights(num_in, num_out);
-            weights.fill_weight(low, high);
-            bias(1, num_out);
-            bias.fill_weight("zeros");
+            initialize(neurons, num_in, 1, "zeros");
+            initialize(weights, num_in, num_out, low, high);
+            initialize(bias, num_out, 1, "zeros");
+            this->set_activation_function();
     };
 
     // initialize output layer
-    Layer(const size_t num_out, const std::string activation_function)
-        : fan_out(num_out), activation_function_name(activation_function) {
-        neurons(1, num_out, "zeros");
-        free(weigts);
+    Layer(const size_t num_in, const std::string activation_function)
+        : fan_in(num_in), fan_out(0), activation_function_name(activation_function) {
+        initialize(neurons, num_in, 1, "zeros");
+        this->set_activation_function();
+        /*free(fan_in)
+        free(weights);
         free(bias);
-        free(fan_in);
+        free(fan_in);*/
+        //delete *fan_in
     }
 
-    ~Layer();
+    //~Layer();
+
+    // set activation function
+    void set_activation_function();
     
     // activate neuron using activation function
-    const matrix::Matrix activate();
+    void activate();
 
     // compute gradient of activation fuction 
-    const matrix::Matrix gradients();
+    matrix::Matrix gradients();
     
     // perform forward propagate: W.T @ x + b
-    const matrix::Matrix forward():
+    void forward(Layer &next_layer);
 
     // update weights and bias one step
     void step();
+
+    void feed(std::vector<double> &input);
+
+    // return weights
+    matrix::Matrix get_weights();
     
 private:
     const size_t fan_in;
     const size_t fan_out;
     const std::string activation_function_name;
-    // const std::string initialize_name;
+    std::function<double(double)> activation_function;
+    std::function<double(double)> activation_function_derivative;
     matrix::Matrix neurons;
+    matrix::Matrix activated_neurons;
     matrix::Matrix weights;
+    matrix::Matrix transposed_weights;
     matrix::Matrix bias;
 };
-
-// perform forward propagate from layer to next layer
-void pass_forward(Layer& lhs, Layer& rhs);
 };
 
-
+/*
 class Layer{
     public:
         Layer(int _num_neurons, std::string layer_id);
@@ -101,7 +105,48 @@ class Layer{
         } 
         
         inline int return_num_neurons(){
-            return this->num_neurons;
+            return this->num_neurons;    Layer(const size_t num_in, const size_t num_out, const std::string activation_function, const std::string initializer) 
+        : fan_in(num_in), fan_out(num_out), activation_function_name(activation_function){
+            initialize(neurons, 1, num_in, "zeros");
+            initialize(weights, num_in, num_out, initializer);
+            initialize(bias, 1, num_out, initializer);
+            
+    };
+
+    // initialize with weights and bias with range
+    Layer(const size_t num_in, const size_t num_out, const std::string activation_function, const double low, const double high) 
+        : fan_in(num_in), fan_out(num_out), activation_function_name(activation_function){
+            initialize(neurons, 1, num_in, "zeros");
+            initialize(weights, num_in, num_out, low, high);
+            initialize(bias, 1, num_out, low, high);
+    };
+
+    // initialize with no bias
+    Layer(const size_t num_in, const size_t num_out, const std::string activation_function, const std::string initializer, const std::string no_bias) 
+        : fan_in(num_in), fan_out(num_out), activation_function_name(activation_function){
+            initialize(neurons, 1, num_in, "zeros");
+            initialize(weights, num_in, num_out, initializer);
+            initialize(bias, 1, num_out, "zeros");
+    };
+
+    // initialize with no bias and weight with range
+    Layer(const size_t num_in, const size_t num_out, const std::string activation_function, const double low, const double high, const std::string no_bias) 
+        : fan_in(num_in), fan_out(num_out), activation_function_name(activation_function){
+            initialize(neurons, 1, num_in, "zeros");
+            initialize(weights, num_in, num_out, low, high);
+            initialize(bias, 1, num_out, "zeros");
+    };
+
+    // initialize output layer
+    Layer(const size_t num_in, const std::string activation_function)
+        : fan_in(num_in), fan_out(0), activation_function_name(activation_function) {
+        initialize(neurons, 1, num_in, "zeros");
+        /*free(fan_in)
+        free(weights);
+        free(bias);
+        free(fan_in);
+        //delete *fan_in
+    }
         }
 
         inline void set_Lmomentum(double x){
@@ -173,5 +218,5 @@ class Layer{
         double regularization;
 
 };
-
+*/
 
