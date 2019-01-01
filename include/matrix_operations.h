@@ -10,7 +10,9 @@ struct Matrix{
         matrix.resize(m * n);
     };
     
-    Matrix(){}
+    Matrix(){};
+
+    //~Matrix();
 
     size_t m; // rows
     size_t n; // columns
@@ -21,6 +23,15 @@ struct Matrix{
     void T(); //transpose
     
 };
+
+//helper function for initialization
+void initialize(Matrix& empty_matrix, size_t row, size_t col, std::string initializer);
+
+// helper function for initialization
+void initialize(Matrix& empty_matrix, size_t row, size_t col, double low, double high);
+
+// copy one matrix from another matrix
+void copy_matrix(Matrix& A, Matrix& B);
 
 // element wise addition
 const Matrix operator+(const Matrix& lhs, const Matrix& rhs);
