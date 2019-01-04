@@ -6,14 +6,14 @@
 #include <math.h>
 #include <assert.h>
 
-namespace matrix{
+namespace tensor{
 
 
-void Matrix::fill_weights(const std::string initializer){
-    this->matrix.resize(this->m * this->n);
+void Tensor::fill_weights(const std::string initializer){
+    this->tensor.resize(this->m * this->n);
     if(initializer== "zero"){
         for(size_t entry = 0; entry < this->m * this->n; ++entry){
-            this->matrix[entry] = 0.0;
+            this->tensor[entry] = 0.0;
         }  
     }
 
@@ -24,88 +24,88 @@ void Matrix::fill_weights(const std::string initializer){
         std::uniform_real_distribution<> dist(-std::sqrt(3.0 * variance), std::sqrt(3.0 * variance));
 
         for(size_t entry = 0; entry < this->m * this->n; ++entry){
-            this->matrix[entry] = dist(e2);
+            this->tensor[entry] = dist(e2);
         }  
     }
 }
 
-void Matrix::fill_weights(const double low, const double high){
-    this->matrix.resize(this->m * this->n);
+void Tensor::fill_weights(const double low, const double high){
+    this->tensor.resize(this->m * this->n);
     std::random_device rd;
     std::mt19937 e2(rd());
     std::uniform_real_distribution<> dist(low, high);
     
     for(size_t entry = 0; entry < this->m * this->n; ++entry){
-        this->matrix[entry] = dist(e2);
+        this->tensor[entry] = dist(e2);
     }  
 }
 
-void Matrix::T(){
-    std::vector<double> original = this->matrix;
-    this->matrix.resize(this->n * this->m);
+void Tensor::T(){
+    std::vector<double> original = this->tensor;
+    this->tensor.resize(this->n * this->m);
     for(size_t e = 0; e < this->n * this->m; ++e){
         size_t i = e/this->m;
         size_t j = e%this->m;
-        this->matrix[e] = original[this->n * j + i];
+        this->tensor[e] = original[this->n * j + i];
     }
     std::swap(this->m, this->n);
     this->transposed = !this->transposed;
 }
 
-void copy_matrix(Matrix& A, Matrix& B){
+void copy_tensor(Tensor& A, Tensor& B){
     A = B;
 }
 
-void initialize(Matrix& empty_matrix, size_t row, size_t col, std::string initializer){
-    empty_matrix.m = row;
-    empty_matrix.n = col;
-    empty_matrix.fill_weights(initializer);
+void initialize(Tensor& empty_tensor, size_t row, size_t col, std::string initializer){
+    empty_tensor.m = row;
+    empty_tensor.n = col;
+    empty_tensor.fill_weights(initializer);
 }
 
-void initialize(Matrix& empty_matrix, size_t row, size_t col, double low, double high){
-    empty_matrix.m = row;
-    empty_matrix.n = col;
-    empty_matrix.fill_weights(low, high);
+void initialize(Tensor& empty_tensor, size_t row, size_t col, double low, double high){
+    empty_tensor.m = row;
+    empty_tensor.n = col;
+    empty_tensor.fill_weights(low, high);
 }
 
-const Matrix operator+(const Matrix& lhs, const Matrix& rhs){
-    Matrix ret(lhs.m, lhs.n);
+const Tensor operator+(const Tensor& lhs, const Tensor& rhs){
+    Tensor ret(lhs.m, lhs.n);
     for(size_t entry = 0; entry < lhs.m * lhs.n; ++entry){
-        ret.matrix[entry] = lhs.matrix[entry] + rhs.matrix[entry];
+        ret.tensor[entry] = lhs.tensor[entry] + rhs.tensor[entry];
     }
     return ret;
 }
 
-const Matrix operator-(const Matrix& lhs, const Matrix& rhs){
-    Matrix ret(lhs.m, lhs.n);
+const Tensor operator-(const Tensor& lhs, const Tensor& rhs){
+    Tensor ret(lhs.m, lhs.n);
     for(size_t entry = 0; entry < lhs.m * lhs.n; ++entry){
-        ret.matrix[entry] = lhs.matrix[entry] - rhs.matrix[entry];
+        ret.tensor[entry] = lhs.tensor[entry] - rhs.tensor[entry];
     }
     return ret;
 }
 
-const Matrix operator*(const double k, const Matrix& rhs){
-    Matrix ret(rhs.m, rhs.n);
+const Tensor operator*(const double k, const Tensor& rhs){
+    Tensor ret(rhs.m, rhs.n);
     for(size_t entry = 0; entry < rhs.m * rhs.n; ++entry){
-        ret.matrix[entry] = k * rhs.matrix[entry];
+        ret.tensor[entry] = k * rhs.tensor[entry];
     }
     return ret;
 }
 
-const Matrix operator*(const Matrix& lhs, const Matrix& rhs){
+const Tensor operator*(const Tensor& lhs, const Tensor& rhs){
     assert(lhs.n == rhs.m);
-    Matrix ret(lhs.m, rhs.n);
+    Tensor ret(lhs.m, rhs.n);
     for(size_t i = 0; i < lhs.m; ++i){
         for(size_t j = 0; j < rhs.n; ++j){
             for(size_t k = 0; k < lhs.n; ++k){
-                ret.matrix[j + i * rhs.n] += lhs.matrix[k + i * lhs.n] * rhs.matrix[j + k * rhs.n];
+                ret.tensor[j + i * rhs.n] += lhs.tensor[k + i * lhs.n] * rhs.tensor[j + k * rhs.n];
             }
         }
     }
     return ret;
 }
 
-std::ostream& operator<<(std::ostream& os, const Matrix& M){
+std::ostream& operator<<(std::ostream& os, const Tensor& M){
     os << "[";
     for(size_t i = 0; i < M.m; ++i){
         if(i != 0){
@@ -113,7 +113,7 @@ std::ostream& operator<<(std::ostream& os, const Matrix& M){
         }
         os << "[";
         for(size_t j = 0; j < M.n; ++j){
-            os << M.matrix[j + M.n * i];
+            os << M.tensor[j + M.n * i];
             if(j == M.n - 1){
                 os << "]";
             }else{

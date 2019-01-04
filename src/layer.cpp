@@ -31,44 +31,47 @@ void Layer::set_activation_function(){
 // perform forward propagate from layer to next layer
 void Layer::activate(){
     this->activated_neurons = this->neurons;
-    for(auto& z : this->activated_neurons.matrix){
+    for(auto& z : this->activated_neurons.tensor){
         z = this->activation_function(z);
     }
 }
 void Layer::pass_forward(Layer &next_layer){
-    matrix::copy_matrix(this->transposed_weights, this->weights);
-    transposed_weights.T();
+    //tensor::copy_tensor(this->transposed_weights, this->weights);
+    // transposed_weights.T();
+    if(!this->weights.transposed){
+        this->weights.T();
+    }
     this->activate();
-    next_layer.neurons = this->transposed_weights * this->activated_neurons + this->bias;
+    next_layer.neurons = this->weights * this->activated_neurons + this->bias;
     // std::cout << this->activated_neurons;
     // std::cout << "\n";
     // std::cout << next_layer.neurons;
 }
 
 // compute gradient of activation fuction 
-matrix::Matrix Layer::gradients(){
-    matrix::Matrix gradients = this->neurons;
-    for(auto& z : gradients.matrix){
+tensor::Tensor Layer::gradients(){
+    tensor::Tensor gradients = this->neurons;
+    for(auto& z : gradients.tensor){
         z = this->activation_function_derivative(z);
     }
     return gradients;
 }
 
-matrix::Matrix Layer::get_weights(){
+tensor::Tensor Layer::get_weights(){
     return this->weights;
 }
 
-void Layer::step(matrix::Matrix &weights_update){
+void Layer::step(tensor::Tensor &weights_update){
     this->weights = this->weights - weights_update;
 }
 
 void Layer::feed(std::vector<double> &input){
     assert(input.size() == this->fan_in);
-    this->neurons.matrix = input;
+    this->neurons.tensor = input;
     // std::cout << this->neurons;
 }
 
-matrix::Matrix Layer::get_activated_neurons(){
+tensor::Tensor Layer::get_activated_neurons(){
     return this->activated_neurons;
 }
 }

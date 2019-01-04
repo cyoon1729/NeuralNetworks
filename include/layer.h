@@ -66,22 +66,25 @@ public:
     void activate();
 
     // compute gradient of activation fuction 
-    matrix::Matrix gradients();
+    tensor::Tensor gradients();
     
     // perform forward propagate: W.T @ x + b
     void pass_forward(Layer &next_layer);
 
     // update weights and bias one step
-    void step(matrix::Matrix &weight_update);
+    void step(tensor::Tensor &weight_update);
 
     // set neuron values to input parameter
     void feed(std::vector<double> &input);
 
     // return activated neurons
-    matrix::Matrix get_activated_neurons();
+    tensor::Tensor get_activated_neurons();
 
     // return weights
-    matrix::Matrix get_weights();
+    tensor::Tensor get_weights();
+
+    // 
+    bool is_training;
     
 private:
     const size_t fan_in;
@@ -89,10 +92,10 @@ private:
     const std::string activation_function_name;
     std::function<double(double)> activation_function;
     std::function<double(double)> activation_function_derivative;
-    matrix::Matrix neurons;
-    matrix::Matrix activated_neurons;
-    matrix::Matrix weights;
-    matrix::Matrix transposed_weights;
-    matrix::Matrix bias;
+    tensor::Tensor neurons;
+    tensor::Tensor activated_neurons;
+    tensor::Tensor weights;
+    // tensor::Tensor transposed_weights;
+    tensor::Tensor bias;
 };
 };

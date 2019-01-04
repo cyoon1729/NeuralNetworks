@@ -10,7 +10,7 @@
 
 namespace neuralnet{
 
-matrix::Matrix BaseNetwork::forward(std::vector<double> &input){
+tensor::Tensor BaseNetwork::forward(std::vector<double> &input){
     this->layers[0].feed(input);
     for(size_t layer_index = 0; layer_index < this->num_layers; ++layer_index){
         this->layers[layer_index].pass_forward(layers[layer_index+1]);
@@ -20,7 +20,7 @@ matrix::Matrix BaseNetwork::forward(std::vector<double> &input){
     return this->layers[this->num_layers-1].get_activated_neurons();
 }
 
-matrix::Matrix MLP::forward(std::vector<double> &input){
+tensor::Tensor MLP::forward(std::vector<double> &input){
     this->layers[0].feed(input);
     for(size_t layer_index = 0; layer_index < this->num_layers-1; ++layer_index){
         this->layers[layer_index].pass_forward(this->layers[layer_index+1]);
