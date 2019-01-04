@@ -3,20 +3,23 @@
 #include <vector>
 #include <iostream>
 
-namespace matrix{
+namespace tensor{
 
-struct Matrix{
-    Matrix(size_t row, size_t col): m(row), n(col) {
-        matrix.resize(m * n);
+/*
+ TODO: change Tensor structure to n-dimensional
+*/
+struct Tensor{
+    Tensor(size_t row, size_t col): m(row), n(col) {
+        tensor.resize(m * n);
     };
     
-    Matrix(){};
+    Tensor(){};
 
-    //~Matrix();
+    //~Tensor();
 
     size_t m; // rows
     size_t n; // columns
-    std::vector<double> matrix; // row major matrix
+    std::vector<double> tensor; // row major Tensor
     bool transposed = false;
     void fill_weights(const std::string initializer); // weight initialization using "glorot," "he-et-al," and "kaiming" 
     void fill_weights(const double low, const double high); // weight initialization with uniform distribution given lower and upper bound
@@ -25,27 +28,27 @@ struct Matrix{
 };
 
 //helper function for initialization
-void initialize(Matrix& empty_matrix, size_t row, size_t col, std::string initializer);
+void initialize(Tensor& empty_tensor, size_t row, size_t col, std::string initializer);
 
 // helper function for initialization
-void initialize(Matrix& empty_matrix, size_t row, size_t col, double low, double high);
+void initialize(Tensor& empty_tensor, size_t row, size_t col, double low, double high);
 
-// copy one matrix from another matrix
-void copy_matrix(Matrix& A, Matrix& B);
+// copy one Tensor from another Tensor
+void copy_Tensor(Tensor& A, Tensor& B);
 
 // element wise addition
-const Matrix operator+(const Matrix& lhs, const Matrix& rhs);
+const Tensor operator+(const Tensor& lhs, const Tensor& rhs);
 
 // element wise subtraction
-const Matrix operator-(const Matrix& lhs, const Matrix& rhs);
+const Tensor operator-(const Tensor& lhs, const Tensor& rhs);
 
 // scalar multiplication
-const Matrix operator*(const double k, const Matrix& a);
+const Tensor operator*(const double k, const Tensor& a);
 
-// matrix multipication (also dot product)
-const Matrix operator*(const Matrix& lhs, const Matrix& rhs);
+// Tensor multipication (also dot product)
+const Tensor operator*(const Tensor& lhs, const Tensor& rhs);
 
-// numpy style matrix output
-std::ostream& operator<<(std::ostream& os, const Matrix& M);
+// numpy style Tensor output
+std::ostream& operator<<(std::ostream& os, const Tensor& M);
 
 };

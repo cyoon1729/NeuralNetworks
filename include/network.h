@@ -13,7 +13,7 @@ class BaseNetwork{
 public:
     BaseNetwork(std::vector<Layer> &layers_vector) : layers(layers_vector), num_layers(layers_vector.size()){};
 
-    matrix::Matrix forward(std::vector<double> &input);
+    tensor::Tensor forward(std::vector<double> &input);
 private:
     std::vector<Layer> layers;
     size_t num_layers;
@@ -27,7 +27,7 @@ class MLP{
 public:
     MLP(std::vector<Layer> &layers_vector) : layers(layers_vector), num_layers(layers_vector.size()){};
 
-    matrix::Matrix forward(std::vector<double> &input);
+    tensor::Tensor forward(std::vector<double> &input);
     
     inline void say_hello(void){
         std::cout << "hello\n";
