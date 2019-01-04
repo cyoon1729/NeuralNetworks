@@ -1,4 +1,4 @@
-#include "../include/matrix_operations.h"
+#include "../include/core_math.h"
 #include <iostream>
 
 int main(){

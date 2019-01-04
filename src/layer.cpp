@@ -1,5 +1,5 @@
 #include "../include/layer.h"
-#include "../include/matrix_operations.h"
+#include "../include/core_math.h"
 #include "../include/activation_functions.h"
 #include <vector>
 #include <string>
@@ -40,9 +40,9 @@ void Layer::pass_forward(Layer &next_layer){
     transposed_weights.T();
     this->activate();
     next_layer.neurons = this->transposed_weights * this->activated_neurons + this->bias;
-    std::cout << this->activated_neurons;
-    std::cout << "\n";
-    std::cout << next_layer.neurons;
+    // std::cout << this->activated_neurons;
+    // std::cout << "\n";
+    // std::cout << next_layer.neurons;
 }
 
 // compute gradient of activation fuction 
@@ -65,6 +65,10 @@ void Layer::step(matrix::Matrix &weights_update){
 void Layer::feed(std::vector<double> &input){
     assert(input.size() == this->fan_in);
     this->neurons.matrix = input;
-    std::cout << this->neurons;
+    // std::cout << this->neurons;
+}
+
+matrix::Matrix Layer::get_activated_neurons(){
+    return this->activated_neurons;
 }
 }

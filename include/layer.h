@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 #include <functional>
-#include "./matrix_operations.h"
+#include "./core_math.h"
 
 namespace neuralnet{
 
@@ -74,7 +74,11 @@ public:
     // update weights and bias one step
     void step(matrix::Matrix &weight_update);
 
+    // set neuron values to input parameter
     void feed(std::vector<double> &input);
+
+    // return activated neurons
+    matrix::Matrix get_activated_neurons();
 
     // return weights
     matrix::Matrix get_weights();
