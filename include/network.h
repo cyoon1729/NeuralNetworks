@@ -11,30 +11,20 @@ namespace neuralnet{
 
 class BaseNetwork{
 public:
-    BaseNetwork(std::vector<Layer> &layers_vector) : layers(layers_vector), num_layers(layers_vector.size()){};
+    virtual ~BaseNetwork() {}
 
-    tensor::Tensor forward(std::vector<double> &input);
-private:
+protected:
+    BaseNetwork(std::vector<Layer> &layers_vector): layers(layers_vector), num_layers(layers_vector.size()) {};
     std::vector<Layer> layers;
     size_t num_layers;
 };
 
-/* class FeedForwardNN: public BaseNetwork{
- // identical to Base Network
-}; */
-
-class MLP{ 
+class MLP: public BaseNetwork{ 
 public:
-    MLP(std::vector<Layer> &layers_vector) : layers(layers_vector), num_layers(layers_vector.size()){};
-
+    MLP(std::vector<Layer> &layers_vector): BaseNetwork(layers_vector){};
     tensor::Tensor forward(std::vector<double> &input);
-    
-    inline void say_hello(void){
-        std::cout << "hello\n";
-    }
-private:
-    std::vector<Layer> layers;
-    size_t num_layers;
+    void update_weights();
+    std::vector<tensor::Tensor> get_activated_layers();
 };
 /*
 class LSTMcell{

@@ -10,15 +10,15 @@
 
 namespace neuralnet{
 
-tensor::Tensor BaseNetwork::forward(std::vector<double> &input){
+/* tensor::Tensor BaseNetwork::forward(std::vector<double> &input){
     this->layers[0].feed(input);
     for(size_t layer_index = 0; layer_index < this->num_layers; ++layer_index){
         this->layers[layer_index].pass_forward(layers[layer_index+1]);
     }
     this->layers[this->num_layers-1].activate();
     
-    return this->layers[this->num_layers-1].get_activated_neurons();
-}
+    return this->layers[thi s->num_layers-1].get_activated_neurons();
+} */
 
 tensor::Tensor MLP::forward(std::vector<double> &input){
     this->layers[0].feed(input);
@@ -28,6 +28,14 @@ tensor::Tensor MLP::forward(std::vector<double> &input){
     this->layers[this->num_layers-1].activate();
     
     return this->layers[this->num_layers-1].get_activated_neurons();
+}
+
+std::vector<tensor::Tensor> MLP::get_activated_layers(){
+    std::vector<tensor::Tensor> activated_layers;
+    for(auto &layer: this->layers){
+        activated_layers.push_back(layer.get_activated_layers());
+    }
+    return activated_layers;
 }
 }
 /*
