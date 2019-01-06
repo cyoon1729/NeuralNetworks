@@ -19,10 +19,12 @@ void VGD::define_error_function(){
     }
 }
 
-void VGD::fit(neuralnet::MLP net, const std::vector<tensor::Tensor> &input, const std::vector<tensor::Tensor> &actual, const size_t batch_size){
+void VGD::step(neuralnet::MLP net, const std::vector<tensor::Tensor> &dataset, const std::vector<tensor::Tensor> &actual, const size_t batch_size){
     std::vector<tensor::Tensor> accumulated_gradients;
-    for(size_t data = 0; data < batch_size; ++data){
-        tensor::Tensor output = net.forward(input[data]);
+    std::vector<tensor::Tensor> partial_wrt_weight;
+    tensor::Tensor output;
+    for(size_t input = 0; input < batch_size; ++input){
+        output = net.forward(dataset[input]);
         std::vector<tensor::Tensor> activated_layers = net->get_activated_layers();
         
         // transpose activated values
@@ -32,23 +34,25 @@ void VGD::fit(neuralnet::MLP net, const std::vector<tensor::Tensor> &input, cons
         
         for(size_t i = net->num_layer-2; i >= 0; --i){
             if(accumulated_gradients.size() != net->num_layer){
-                accumulated_gradients.append(delta[i + 1] * activated_layers[i]);
+                accumulated_gradients.push_back(delta[i + 1] * activated_layers[i]);
             }else{
                 accumulated_gradients[i] = accumulated_gradients[i] + delta[i+1] * activated_layers[i];
             }
         }
+    }
+    partial_wrt_weight = accumulated_gradients;
 
-        for(auto &tensors : accumulated_gradients){
-            tensors = (1 / batch_size)(double) * tensors;   
-        }
-
-
-
-
-
-
+    // batch coefficient and momentum 
+    for(size_t index = 0; index < net->num_layer; ++index){
+        partial_wrt_weight[i] = (1 / batch_size) * partial_wrt_weight[i] + this->momentum * net->get_layer_weights(net->num_layer - i - 1);
     }
 
+    // multiply learning rate
+    for(auto &tensors : partial_wrt_weight){
+        tensors = this->learning_rate * tensors;
+    }
+
+    net.update_weights(partial_wrt_weight);
 }
 }
 
