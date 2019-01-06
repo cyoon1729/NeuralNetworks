@@ -7,6 +7,7 @@
 #include <cmath>
 #include <ctime>
 #include <cstdlib>
+#include <assert.h>
 
 namespace neuralnet{
 
@@ -36,6 +37,17 @@ std::vector<tensor::Tensor> MLP::get_activated_layers(){
         activated_layers.push_back(layer.get_activated_layers());
     }
     return activated_layers;
+}
+
+void MLP::update_weights(std::vector<tensor::Tensor> &changes){
+    for(size_t i = 0; i < this->num_layers; ++i){
+        this->layers[i].step(changes[this->num_layers - i - 1]);
+    }
+}
+
+tensor::Tensor MLP::get_layer_weights(const size_t index){
+    assert(index < this->num_hidden_layers);
+    return this->layers[index].get_weights();
 }
 }
 /*
