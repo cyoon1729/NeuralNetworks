@@ -25,6 +25,7 @@ public:
     tensor::Tensor forward(std::vector<double> &input);
     void update_weights();
     std::vector<tensor::Tensor> get_activated_layers();
+    tensor::Tensor get_layer_weights(const size_t index);
 };
 /*
 class LSTMcell{
