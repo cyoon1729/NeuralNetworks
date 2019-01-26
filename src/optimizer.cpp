@@ -1,4 +1,3 @@
-#pragma once
 #include <functional>
 #include <string> 
 #include "../include/network.h"
@@ -10,16 +9,18 @@ namespace optimizer{
 // gradient descent
 
 void VGD::define_error_function(){
+    
     if(this->error_function_name == "MSE"){
         this->error_function = MSE;
         this->error_function_derivative = MSE_derivative;
-    }else if(this->error_function_name == "cross_entropy"){
+    }/*else if(this->error_function_name == "cross_entropy"){
         this->error_function = cross_entropy;
         this->error_function_derivative = cross_entropy_derivative;
-    }
+    }*/
 }
 
-void VGD::step(neuralnet::MLP net, const std::vector<tensor::Tensor> &dataset, const std::vector<tensor::Tensor> &actual, const size_t batch_size){
+void VGD::step(neuralnet::MLP net, const std::vector< std::vector<double> > &dataset, const std::vector< std::vector<double> > &actual, const size_t batch_size){
+    this->define_error_function();
     std::vector<tensor::Tensor> accumulated_gradients;
     std::vector<tensor::Tensor> partial_wrt_weight;
     tensor::Tensor output;
@@ -54,5 +55,6 @@ void VGD::step(neuralnet::MLP net, const std::vector<tensor::Tensor> &dataset, c
 
     net.update_weights(partial_wrt_weight);
 }
+
 }
 

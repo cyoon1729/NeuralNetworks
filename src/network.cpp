@@ -34,7 +34,7 @@ tensor::Tensor MLP::forward(std::vector<double> &input){
 std::vector<tensor::Tensor> MLP::get_activated_layers(){
     std::vector<tensor::Tensor> activated_layers;
     for(auto &layer: this->layers){
-        activated_layers.push_back(layer.get_activated_layers());
+        activated_layers.push_back(layer.get_activated_neurons());
     }
     return activated_layers;
 }
@@ -46,7 +46,7 @@ void MLP::update_weights(std::vector<tensor::Tensor> &changes){
 }
 
 tensor::Tensor MLP::get_layer_weights(const size_t index){
-    assert(index < this->num_hidden_layers);
+    //assert(index < this->num_hidden_layers);
     return this->layers[index].get_weights();
 }
 }

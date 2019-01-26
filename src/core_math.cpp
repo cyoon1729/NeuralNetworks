@@ -105,6 +105,11 @@ const Tensor operator*(const Tensor& lhs, const Tensor& rhs){
     return ret;
 }
 
+/*const Tensor operator=(const Tensor& t){
+    return t;
+}*/
+
+
 std::ostream& operator<<(std::ostream& os, const Tensor& M){
     os << "[";
     for(size_t i = 0; i < M.m; ++i){
