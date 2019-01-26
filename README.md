@@ -38,20 +38,20 @@ saNNity is a work-in-progress C++ neural network library
  /*
   * Initialize layer with weights with initializer
   * params: (size_t fan_in, size_t fan_out, std::string activation_function, std::string weight_initializer)
- */
+  */
  neuralnet::Layer one(3, 4, "linear", "glorot"); // params:
  
  /*
   * Initialize layer with weights in range [low, high]
   * params: (size_t fan_in, size_t fan_out, std::string activation_function, double low, double high)
- */
+  */
  neuralnet::Layer two(4, 1, "linear", -0.001, 0.001 ); 
  
 
  /*
   * Initialize (output) layer 
   * params: (size_t fan_in, std::string activation_function, ...)
- */
+  */
  neuralnet::Layer two(4, "linear", "glorot"); 
  neuralnet::Layer two(4, "linear", -0.001, 0.001 ); 
  
@@ -60,8 +60,8 @@ saNNity is a work-in-progress C++ neural network library
  - `class MLP`: Standard multiplayer preceptron
  ```c++
     /*
-    Param: std::vector<neuralnet::layer> layers
-    */
+     * Param: std::vector<neuralnet::layer> layers
+     */
     std::vector<neuralnet::Layer> layers = {
         neuralnet::Layer(3, 4, "linear", "glorot"),
         neuralnet::Layer(4, 1, "linear", "glorot"),
