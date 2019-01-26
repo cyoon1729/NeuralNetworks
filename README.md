@@ -4,7 +4,8 @@ saNNity is a work-in-progress C++ neural network library
 
 ## Namespaces
 
-- `tensor`
+1. `tensor` : core math & tensor / matrix operations
+  
   ```c++
   tensor::Tensor T(3, 4) // an empty 3 by 4 rank 2 tensor
   T.fill_weights("glorot") // fill entries with glorot initializiation
