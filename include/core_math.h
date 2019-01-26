@@ -48,6 +48,9 @@ const Tensor operator*(const double k, const Tensor& a);
 // Tensor multipication (also dot product)
 const Tensor operator*(const Tensor& lhs, const Tensor& rhs);
 
+
+//const Tensor operator=(const Tensor& t);
+
 // numpy style Tensor output
 std::ostream& operator<<(std::ostream& os, const Tensor& M);
 
