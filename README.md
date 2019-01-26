@@ -2,9 +2,10 @@
 
 saNNity is a work-in-progress C++ neural network library 
 
+For now: 
 ## Namespaces
 
-1. `tensor` : core math & tensor / matrix operations
+### 1. `tensor` : core math & tensor / matrix operations
   
   ```c++
   tensor::Tensor T(3, 4) // an empty 3 by 4 rank 2 tensor
@@ -32,7 +33,7 @@ saNNity is a work-in-progress C++ neural network library
   std::cout << A;
   ```
 
- 2. 'neuralnet' : neural network class
+ ### 2. `neuralnet` : neural network class
  - `class Layer`: Bass layer 
  ```c++
  /*
@@ -74,3 +75,5 @@ saNNity is a work-in-progress C++ neural network library
     std::cout << network.forward(data);
 
  ```
+ 
+ ### 3. `optimizer`: Optimization algorithms for updating neural network weights  
