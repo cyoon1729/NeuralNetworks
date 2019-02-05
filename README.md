@@ -77,7 +77,7 @@ For now:
  ```
  
  ### 3. `optimizer`: Optimization algorithms for updating neural network weights  
-Vanilla Gradient Descent
+ - Vanilla Gradient Descent
 ```c++
 
     std::vector<neuralnet::Layer> layers = {
