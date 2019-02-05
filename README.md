@@ -89,6 +89,7 @@ For now:
  ```
  - Vanilla Gradient Descent
 ```c++
+  
   std::vector<neuralnet::Layer> layers = {
       neuralnet::Layer(3, 4, "linear", "glorot"),
       neuralnet::Layer(4, 1, "linear", "glorot"),
@@ -98,9 +99,10 @@ For now:
 
   std::vector<double> data = {0.3, 0.3, 1.0};
   std::cout << network.forward(data);
-
+  
+  double learning_rate = 0.95;
   std::vector< std::vector<double> > dataset = {{0.3, 0.3, 1.0}};
   std::vector< std::vector<double> > correct = {{0.3}};
-  optimizer::VGD optim(network, "MSE");
+  optimizer::VGD optim(network, "MSE", learning_rate);
   optim.step(network, dataset, correct, 1);
 ```
