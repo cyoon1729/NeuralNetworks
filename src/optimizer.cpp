@@ -6,17 +6,16 @@
 #include "../include/error_function.h"
 
 namespace optimizer{
-// gradient descent
 
 void VGD::define_error_function(){
     
     if(this->error_function_name == "MSE"){
         this->error_function = MSE;
         this->error_function_derivative = MSE_derivative;
-    }/*else if(this->error_function_name == "cross_entropy"){
+    }else if(this->error_function_name == "cross_entropy"){
         this->error_function = cross_entropy;
         this->error_function_derivative = cross_entropy_derivative;
-    }*/
+    }
 }
 
 void VGD::step(neuralnet::MLP net, const std::vector< std::vector<double> > &dataset, const std::vector< std::vector<double> > &actual, const size_t batch_size){
